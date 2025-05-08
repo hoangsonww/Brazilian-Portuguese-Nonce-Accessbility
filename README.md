@@ -56,6 +56,10 @@ Responses are binary (`accept` vs. `reject`). We visualize the contingency with 
 4. **Chi-square test** of `length` vs. `initial`.  
    - p = 1.00 → no association (as expected).
 
+<p align="center">
+  <img src="img/nonce-1.png" width="100%" />
+</p>
+
 ---
 
 ## Prerequisites
