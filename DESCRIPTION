@@ -1,0 +1,22 @@
+Package: BPNonceAcceptability
+Type: Package
+Title: Acceptability Judgments for Brazilian Portuguese Nonce Words
+Version: 0.1.0
+Authors@R: 
+    person(given = "David",   family = "Nguyen",  role = c("aut", "cre"), email = "david@example.com"),
+    person(given = "Rosser",  family = "Martin", role = "aut",          email = "rosser@example.com")
+Description: 
+    Functions and data for analyzing how word structure (syllable length 
+    and initial segment type) influences nonce‐word acceptability judgments 
+    in Brazilian Portuguese. Includes plotting utilities (mosaic plots) 
+    and statistical tests.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+    ggplot2 (>= 3.3.0),
+    ggmosaic (>= 0.2.2)
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Suggests:
+    testthat (>= 3.0.0)
