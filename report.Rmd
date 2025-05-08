@@ -1,0 +1,128 @@
+---
+title: "Brazilian Portuguese Nonce-Word Acceptability Analysis"
+author:
+  - David Nguyen
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    code_folding: hide
+    theme: cerulean
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo       = TRUE,
+  warning    = FALSE,
+  message    = FALSE,
+  fig.width  = 8,
+  fig.height = 5
+)
+# Install & load required packages
+pkgs <- c("ggplot2","ggmosaic")
+for(pkg in pkgs) {
+  if (!requireNamespace(pkg, quietly=TRUE)) install.packages(pkg)
+}
+lapply(pkgs, library, character.only=TRUE)
+````
+
+# 1. Project Overview
+
+We investigate whether **word structure**—specifically **syllable count** (length) and **initial segment type**—influences acceptability judgments in a nonce-word experiment with native Brazilian Portuguese speakers.
+
+* **Null hypothesis (H₀):** Word structure does *not* influence acceptability judgments.
+* **Alternative hypothesis (H₁):** Word structure *does* influence acceptability judgments.
+
+# 2. Data Loading
+
+```{r load-data}
+bp <- read.csv("bp-nonce.csv", stringsAsFactors = TRUE)
+cat("Total observations:", nrow(bp), "\n\n")
+head(bp)
+```
+
+The dataset `bp-nonce.csv` contains:
+
+* `response`: whether the nonce word was **accepted** or **rejected**
+* `length`: the number of syllables (e.g., `"1"`, `"2"`)
+* `initial`: type of initial segment (e.g., `"stop"`, `"fricative"`, etc.)
+
+# 3. Contingency Tables
+
+Summarize counts of responses by `length` and `initial`:
+
+```{r summary-table}
+summary_table <- xtabs(~ response + length + initial, data = bp)
+print(summary_table)
+```
+
+# 4. Mosaic Plot Visualization
+
+We visualize the joint distribution of `response` × `length` × `initial` using a faceted mosaic plot:
+
+```{r mosaic-plot}
+ggplot(bp) +
+  geom_mosaic(aes(weight = 1, x = product(response), fill = response)) +
+  facet_grid(length ~ initial) +
+  labs(
+    title = "Mosaic Plot of Acceptability by Syllable Count and Initial Segment",
+    x     = "Response",
+    y     = "Proportion"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_blank(),
+    panel.grid  = element_blank()
+  )
+```
+
+# 5. Chi-Square Tests
+
+## 5.1 Response vs. Initial Segment
+
+Test whether **initial segment type** is associated with **acceptability**:
+
+```{r chi-response-initial}
+cs_initial <- chisq.test(xtabs(~ response + initial, data = bp))
+cs_initial
+```
+
+> **Result:** p-value ≈ `r signif(cs_initial$p.value,3)`
+> At α = 0.05, we **fail to reject** H₀: *no significant association* between initial segment and response.
+
+## 5.2 Length vs. Initial Segment
+
+Test independence of **syllable count** and **initial segment**:
+
+```{r chi-length-initial}
+cs_length <- chisq.test(xtabs(~ length + initial, data = bp))
+cs_length
+```
+
+> **Result:** p-value = `r signif(cs_length$p.value,3)`
+> As expected, we observe **no association** (variables are independent by design).
+
+# 6. Interpretation
+
+* The chi-square test for **response vs. initial** yields p > 0.05, indicating **no evidence** that initial segment influences acceptability judgments in this sample.
+* The mosaic plot confirms a fairly uniform pattern across facets.
+* The **syllable count** and **initial segment** are also independent, validating experimental design.
+
+**Conclusion:** We find no support for the alternative hypothesis; word structure (initial segment type) does *not* significantly influence nonce-word acceptability among our participants.
+
+# 7. Next Steps
+
+* Test **response vs. length** directly, or include both predictors in a **logistic regression**:
+
+  ```r
+  glm(response ~ length + initial, family="binomial", data=bp)
+  ```
+* Explore additional phonological variables (e.g., coda type, stress pattern).
+* Increase sample size or participant diversity to improve statistical power.
+
+# 8. References
+
+* **ggplot2**: Wickham H. (2016). *ggplot2: Elegant Graphics for Data Analysis*.
+* **ggmosaic**: Hofmann H. (2016). *Visualizing Categorical Data with Mosaic Plots*.
+* Brazilian Portuguese nonce-word experiment (unpublished data).
