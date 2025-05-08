@@ -1,0 +1,56 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+
+\title{Brazilian Portuguese Nonce-Word Acceptability}
+\author{David Nguyen \and Rosser Martin}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We examine whether word structure (syllable count and initial segment type) influences nonce-word acceptability judgments by native Brazilian Portuguese speakers. We use mosaic plots and chi-square tests to assess associations.
+\end{abstract}
+
+\section{Introduction}
+We test:
+\begin{itemize}
+  \item \textbf{H$_0$:} Word structure does not influence acceptability.
+  \item \textbf{H$_1$:} Word structure does influence acceptability.
+\end{itemize}
+
+\section{Methods}
+Data are loaded from \texttt{bp-nonce.csv}. Variables:
+\begin{itemize}
+  \item \texttt{response}: accept vs.\ reject
+  \item \texttt{length}: syllable count
+  \item \texttt{initial}: initial segment category
+\end{itemize}
+
+\section{Results}
+
+\subsection{Contingency Table}
+\begin{verbatim}
+<<R code prints xtabs summary here>>
+\end{verbatim}
+
+\subsection{Mosaic Plot}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{mosaic_plot.png}
+  \caption{Responses by length and initial segment}
+\end{figure}
+
+\subsection{Chi-Square Tests}
+\textbf{Response vs.\ Initial:} p = 0.59, fail to reject H$_0$.\\
+\textbf{Length vs.\ Initial:} p = 1.00, variables independent.
+
+\section{Discussion}
+No evidence that initial segment influences acceptability. Syllable count and initial are independent by design. Future work could include logistic regression of response on both factors.
+
+\end{document}
